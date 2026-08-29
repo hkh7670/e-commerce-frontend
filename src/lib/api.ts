@@ -5,6 +5,7 @@ import type {
   Category,
   CommonResponse,
   DeliveryOption,
+  EmailLoginResult,
   MemberInfo,
   OAuthLoginResult,
   OrderCreateResponse,
@@ -15,6 +16,7 @@ import type {
   ProductDetail,
   ProductSummary,
   OrderSummary,
+  TotpEnrollResult,
 } from '../types'
 
 function unwrap<T>(data: CommonResponse<T>): T {
@@ -127,8 +129,25 @@ export const authApi = {
     return unwrap(res.data)
   },
   login: async (email: string, password: string) => {
-    const res = await http.post<CommonResponse<AuthToken>>('/api/v1/auth/email/login', { email, password })
+    const res = await http.post<CommonResponse<EmailLoginResult>>('/api/v1/auth/email/login', { email, password })
     return unwrap(res.data)
+  },
+  totpLogin: async (totpPendingToken: string, code: string) => {
+    const res = await http.post<CommonResponse<AuthToken>>('/api/v1/auth/totp/login', {
+      totpPendingToken,
+      code,
+    })
+    return unwrap(res.data)
+  },
+  totpEnroll: async () => {
+    const res = await http.post<CommonResponse<TotpEnrollResult>>('/api/v1/auth/totp/enroll')
+    return unwrap(res.data)
+  },
+  totpEnrollConfirm: async (code: string) => {
+    await http.post('/api/v1/auth/totp/enroll/confirm', { code })
+  },
+  totpDisable: async (code: string) => {
+    await http.post('/api/v1/auth/totp/disable', { code })
   },
   oauthExchange: async (code: string) => {
     const res = await http.post<CommonResponse<OAuthLoginResult>>('/api/v1/auth/oauth/exchange', { code })

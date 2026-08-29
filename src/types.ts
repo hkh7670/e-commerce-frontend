@@ -125,6 +125,7 @@ export interface MemberInfo {
   firstName: string
   lastName: string
   joinProvider: JoinProvider
+  totpEnabled: boolean
 }
 
 export interface AuthToken {
@@ -140,6 +141,20 @@ export interface OAuthLoginResult {
   tempToken: string | null
   accessToken: string | null
   refreshToken: string | null
+}
+
+export type EmailLoginStatus = 'LOGIN' | 'NEED_TOTP'
+
+export interface EmailLoginResult {
+  status: EmailLoginStatus
+  totpPendingToken: string | null
+  accessToken: string | null
+  refreshToken: string | null
+}
+
+export interface TotpEnrollResult {
+  secret: string
+  otpAuthUri: string
 }
 
 export interface PaymentConfirmResponse {

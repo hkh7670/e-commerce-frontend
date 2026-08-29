@@ -11,6 +11,7 @@ import { OrderCompletePage } from './pages/OrderCompletePage'
 import { OrderDetailPage } from './pages/OrderDetailPage'
 import { ProductDetailPage } from './pages/ProductDetailPage'
 import { ProductListPage } from './pages/ProductListPage'
+import { SecuritySettingsPage } from './pages/SecuritySettingsPage'
 import { SignupPage } from './pages/SignupPage'
 
 export function App() {
@@ -29,6 +30,7 @@ export function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/oauth/complete" element={<OAuthCompletePage />} />
         <Route path="/oauth/error" element={<OAuthErrorPage />} />
+        <Route path="/account/security" element={<SecuritySettingsPage />} />
       </Route>
     </Routes>
   )
