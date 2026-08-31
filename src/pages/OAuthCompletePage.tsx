@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type SubmitEvent } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { authApi } from '../lib/api'
+import { todayDateString } from '../lib/date'
 import { useAuthStore } from '../store/authStore'
 
 type Stage = 'exchanging' | 'need-sign-up' | 'error'
@@ -95,7 +96,14 @@ export function OAuthCompletePage() {
         </div>
         <div className="field">
           <label htmlFor="birthDate">생년월일</label>
-          <input id="birthDate" type="date" required value={form.birthDate} onChange={update('birthDate')} />
+          <input
+            id="birthDate"
+            type="date"
+            required
+            max={todayDateString()}
+            value={form.birthDate}
+            onChange={update('birthDate')}
+          />
         </div>
         <div className="field">
           <label htmlFor="phoneNumber">휴대전화번호</label>
