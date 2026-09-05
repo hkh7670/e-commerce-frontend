@@ -65,7 +65,8 @@ http.interceptors.response.use(
       }
     }
 
-    const originalRequest = error.config as (InternalAxiosRequestConfig & { _retry?: boolean }) | undefined
+    const originalRequest = error.config as
+      (InternalAxiosRequestConfig & { _retry?: boolean }) | undefined
 
     if (error.response?.status !== 401 || !originalRequest || originalRequest._retry) {
       return Promise.reject(error)

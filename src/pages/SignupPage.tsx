@@ -84,7 +84,13 @@ export function SignupPage() {
         </div>
         <div className="field">
           <label htmlFor="password">비밀번호</label>
-          <input id="password" type="password" required value={form.password} onChange={update('password')} />
+          <input
+            id="password"
+            type="password"
+            required
+            value={form.password}
+            onChange={update('password')}
+          />
           <p className="field-error" style={{ color: 'var(--color-text-faint)' }}>
             영문/숫자/특수문자 포함 10~64자
           </p>

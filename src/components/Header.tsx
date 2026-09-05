@@ -46,7 +46,9 @@ export function Header() {
 
   const handleSearch = (e: SubmitEvent) => {
     e.preventDefault()
-    navigate(keyword.trim() ? `/products?keyword=${encodeURIComponent(keyword.trim())}` : '/products')
+    navigate(
+      keyword.trim() ? `/products?keyword=${encodeURIComponent(keyword.trim())}` : '/products',
+    )
   }
 
   const ProviderIcon = member ? PROVIDER_ICON[member.joinProvider] : null

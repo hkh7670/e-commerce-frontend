@@ -56,7 +56,15 @@ export function MailIcon({ className }: IconProps) {
       fill="none"
       aria-hidden="true"
     >
-      <rect x="2.5" y="4.5" width="15" height="11" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <rect
+        x="2.5"
+        y="4.5"
+        width="15"
+        height="11"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
       <path
         d="M3.5 5.5l6.5 5 6.5-5"
         stroke="currentColor"

@@ -105,23 +105,46 @@ export function SecuritySettingsPage() {
       {!statusLoading && !statusError && totpEnabled === false && (
         <div className="form-card">
           <h2 style={{ fontSize: 16, marginBottom: 'var(--space-3)' }}>OTP 앱 2단계 인증 설정</h2>
-          <p style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 'var(--space-4)' }}>
+          <p
+            style={{
+              fontSize: 13,
+              color: 'var(--color-text-muted)',
+              marginBottom: 'var(--space-4)',
+            }}
+          >
             Google Authenticator 등 OTP 앱으로 QR 코드를 스캔해 2단계 인증을 켤 수 있습니다.
           </p>
 
           {enrollError && <div className="error-banner">{enrollError}</div>}
 
           {!enrollment ? (
-            <button className="btn btn-outline" onClick={handleStartEnroll} disabled={enrollLoading}>
+            <button
+              className="btn btn-outline"
+              onClick={handleStartEnroll}
+              disabled={enrollLoading}
+            >
               {enrollLoading ? '준비 중...' : '설정 시작'}
             </button>
           ) : (
             <>
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'var(--space-4)' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginBottom: 'var(--space-4)',
+                }}
+              >
                 <QRCodeSVG value={enrollment.otpAuthUri} size={180} />
               </div>
-              <p style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 'var(--space-4)' }}>
-                QR을 스캔할 수 없다면 앱에 이 코드를 직접 입력하세요: <strong>{enrollment.secret}</strong>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: 'var(--color-text-muted)',
+                  marginBottom: 'var(--space-4)',
+                }}
+              >
+                QR을 스캔할 수 없다면 앱에 이 코드를 직접 입력하세요:{' '}
+                <strong>{enrollment.secret}</strong>
               </p>
               <form onSubmit={handleConfirmEnroll}>
                 <div className="field">
@@ -135,7 +158,11 @@ export function SecuritySettingsPage() {
                     onChange={(e) => setEnrollCode(e.target.value)}
                   />
                 </div>
-                <button type="submit" className="btn btn-primary btn-block" disabled={enrollConfirming}>
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-block"
+                  disabled={enrollConfirming}
+                >
                   {enrollConfirming ? '확인 중...' : '확인하고 활성화'}
                 </button>
               </form>
@@ -147,7 +174,13 @@ export function SecuritySettingsPage() {
       {!statusLoading && !statusError && totpEnabled === true && (
         <div className="form-card">
           <h2 style={{ fontSize: 16, marginBottom: 'var(--space-3)' }}>2단계 인증 해제</h2>
-          <p style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 'var(--space-4)' }}>
+          <p
+            style={{
+              fontSize: 13,
+              color: 'var(--color-text-muted)',
+              marginBottom: 'var(--space-4)',
+            }}
+          >
             현재 OTP 앱 2단계 인증이 활성화되어 있습니다.
           </p>
 

@@ -68,7 +68,14 @@ export function OrderCompletePage() {
       <div className="empty-state">
         <h2>주문이 완료되었습니다</h2>
         <p>결제가 정상적으로 승인되었습니다.</p>
-        <div style={{ display: 'flex', gap: 'var(--space-3)', justifyContent: 'center', marginTop: 'var(--space-5)' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: 'var(--space-3)',
+            justifyContent: 'center',
+            marginTop: 'var(--space-5)',
+          }}
+        >
           <Link to="/orders" className="btn btn-primary">
             주문내역 보기
           </Link>

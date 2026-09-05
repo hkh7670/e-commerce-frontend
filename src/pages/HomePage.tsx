@@ -30,7 +30,11 @@ export function HomePage() {
       <div className="container">
         <div className="category-rail" style={{ marginBottom: 'var(--space-6)' }}>
           {categories.map((category) => (
-            <Link key={category.id} to={`/products?categoryId=${category.id}`} className="category-chip">
+            <Link
+              key={category.id}
+              to={`/products?categoryId=${category.id}`}
+              className="category-chip"
+            >
               {category.name}
             </Link>
           ))}

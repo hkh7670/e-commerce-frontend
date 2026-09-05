@@ -42,7 +42,8 @@ export function ProductDetailPage() {
   }
 
   const soldOut = product.productOptions.every((option) => option.stockCount === 0)
-  const selectedOption = product.productOptions.find((option) => option.id === selectedOptionId) ?? null
+  const selectedOption =
+    product.productOptions.find((option) => option.id === selectedOptionId) ?? null
   const minPrice = Math.min(...product.productOptions.map((option) => option.price))
 
   const handleAddToCart = async (): Promise<boolean> => {
@@ -83,7 +84,9 @@ export function ProductDetailPage() {
           <h1 className="product-detail__title">{product.name}</h1>
           {soldOut && <span className="stock-badge">품절</span>}
           <div className="product-detail__price">
-            <span className="price__won">{(selectedOption ? selectedOption.price : minPrice).toLocaleString()}</span>
+            <span className="price__won">
+              {(selectedOption ? selectedOption.price : minPrice).toLocaleString()}
+            </span>
             {!selectedOption && '부터'}
           </div>
 
@@ -105,7 +108,9 @@ export function ProductDetailPage() {
                   key={option.id}
                   className={`option-item${selectedOptionId === option.id ? ' selected' : ''}`}
                   onClick={() => option.stockCount > 0 && setSelectedOptionId(option.id)}
-                  style={option.stockCount === 0 ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}
+                  style={
+                    option.stockCount === 0 ? { opacity: 0.5, cursor: 'not-allowed' } : undefined
+                  }
                 >
                   <span>
                     {option.name}
@@ -134,7 +139,9 @@ export function ProductDetailPage() {
               </button>
             </div>
             {selectedOption && (
-              <strong className="price__won">{(selectedOption.price * count).toLocaleString()}</strong>
+              <strong className="price__won">
+                {(selectedOption.price * count).toLocaleString()}
+              </strong>
             )}
           </div>
 
@@ -157,7 +164,9 @@ export function ProductDetailPage() {
             </button>
           </div>
 
-          {product.description && <p className="product-detail__description">{product.description}</p>}
+          {product.description && (
+            <p className="product-detail__description">{product.description}</p>
+          )}
         </div>
       </div>
     </div>

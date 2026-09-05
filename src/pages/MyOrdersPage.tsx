@@ -63,7 +63,9 @@ export function MyOrdersPage() {
         <div className="order-card" key={order.orderId}>
           <div className="order-card__header">
             <span>주문번호 {order.orderUid}</span>
-            <span className={`badge ${STATUS_BADGE_CLASS[order.status]}`}>{STATUS_LABEL[order.status]}</span>
+            <span className={`badge ${STATUS_BADGE_CLASS[order.status]}`}>
+              {STATUS_LABEL[order.status]}
+            </span>
           </div>
           <div className="order-card__body">
             <div>

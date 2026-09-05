@@ -68,13 +68,7 @@ export interface DeliveryOption {
 }
 
 export type OrderStatus =
-  | 'PENDING_PAYMENT'
-  | 'PAID'
-  | 'SHIPPING'
-  | 'DELIVERED'
-  | 'CANCELLED'
-  | 'RETURNING'
-  | 'RETURNED'
+  'PENDING_PAYMENT' | 'PAID' | 'SHIPPING' | 'DELIVERED' | 'CANCELLED' | 'RETURNING' | 'RETURNED'
 
 export interface OrderCreateResponse {
   orderId: number

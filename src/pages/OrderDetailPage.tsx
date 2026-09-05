@@ -95,7 +95,9 @@ export function OrderDetailPage() {
       <div className="order-card">
         <div className="order-card__header">
           <span>주문번호 {order.orderUid}</span>
-          <span className={`badge ${STATUS_BADGE_CLASS[order.status]}`}>{STATUS_LABEL[order.status]}</span>
+          <span className={`badge ${STATUS_BADGE_CLASS[order.status]}`}>
+            {STATUS_LABEL[order.status]}
+          </span>
         </div>
         <div style={{ padding: 'var(--space-5)' }}>
           {order.itemList.map((item) => (
@@ -118,7 +120,14 @@ export function OrderDetailPage() {
       </div>
 
       {(canCancel || canReturn) && (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--space-3)', marginTop: 'var(--space-4)' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: 'var(--space-3)',
+            marginTop: 'var(--space-4)',
+          }}
+        >
           {canCancel && (
             <button className="btn btn-outline" disabled={actionLoading} onClick={handleCancel}>
               주문 취소

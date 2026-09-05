@@ -66,7 +66,9 @@ export function CartPage() {
   const allSelected =
     selectableItems.length > 0 &&
     selectableItems.every((item) => selectedProductOptionIds.includes(item.productOptionId))
-  const selectedItems = items.filter((item) => selectedProductOptionIds.includes(item.productOptionId))
+  const selectedItems = items.filter((item) =>
+    selectedProductOptionIds.includes(item.productOptionId),
+  )
   const productTotal = selectedItems.reduce((sum, item) => sum + item.price * item.count, 0)
 
   const handleToggleAll = () => {
@@ -111,15 +113,23 @@ export function CartPage() {
                 {item.soldOut && <span className="stock-badge">품절</span>}
                 <div className="qty-stepper" style={{ marginBottom: 'var(--space-3)' }}>
                   <button
-                    disabled={item.soldOut || item.count <= 1 || pendingProductOptionId === item.productOptionId}
-                    onClick={() => updateCount(item.productOptionId, item.count - 1).catch(() => {})}
+                    disabled={
+                      item.soldOut ||
+                      item.count <= 1 ||
+                      pendingProductOptionId === item.productOptionId
+                    }
+                    onClick={() =>
+                      updateCount(item.productOptionId, item.count - 1).catch(() => {})
+                    }
                   >
                     -
                   </button>
                   <span>{item.count}</span>
                   <button
                     disabled={item.soldOut || pendingProductOptionId === item.productOptionId}
-                    onClick={() => updateCount(item.productOptionId, item.count + 1).catch(() => {})}
+                    onClick={() =>
+                      updateCount(item.productOptionId, item.count + 1).catch(() => {})
+                    }
                   >
                     +
                   </button>

@@ -28,7 +28,9 @@ function unwrap<T>(data: CommonResponse<T>): T {
 
 export const productApi = {
   list: async (params: { categoryId?: number; keyword?: string; page?: number; size?: number }) => {
-    const res = await http.get<CommonResponse<PageResponse<ProductSummary>>>('/api/v1/products', { params })
+    const res = await http.get<CommonResponse<PageResponse<ProductSummary>>>('/api/v1/products', {
+      params,
+    })
     return unwrap(res.data)
   },
   get: async (productId: number) => {
@@ -70,22 +72,29 @@ export const orderApi = {
     return unwrap(res.data)
   },
   cancel: async (orderId: number) => {
-    const res = await http.post<CommonResponse<OrderStatusChangeResponse>>(`/api/v1/orders/${orderId}/cancel`)
+    const res = await http.post<CommonResponse<OrderStatusChangeResponse>>(
+      `/api/v1/orders/${orderId}/cancel`,
+    )
     return unwrap(res.data)
   },
   requestReturn: async (orderId: number) => {
-    const res = await http.post<CommonResponse<OrderStatusChangeResponse>>(`/api/v1/orders/${orderId}/return`)
+    const res = await http.post<CommonResponse<OrderStatusChangeResponse>>(
+      `/api/v1/orders/${orderId}/return`,
+    )
     return unwrap(res.data)
   },
 }
 
 export const paymentApi = {
   confirm: async (paymentKey: string, orderId: string, amount: number) => {
-    const res = await http.post<CommonResponse<PaymentConfirmResponse>>('/api/v1/payments/confirm', {
-      paymentKey,
-      orderId,
-      amount,
-    })
+    const res = await http.post<CommonResponse<PaymentConfirmResponse>>(
+      '/api/v1/payments/confirm',
+      {
+        paymentKey,
+        orderId,
+        amount,
+      },
+    )
     return unwrap(res.data)
   },
 }
@@ -96,15 +105,23 @@ export const cartApi = {
     return unwrap(res.data)
   },
   addItem: async (productOptionId: number, count: number) => {
-    const res = await http.post<CommonResponse<CartResponse>>('/api/v1/cart/items', { productOptionId, count })
+    const res = await http.post<CommonResponse<CartResponse>>('/api/v1/cart/items', {
+      productOptionId,
+      count,
+    })
     return unwrap(res.data)
   },
   updateCount: async (productOptionId: number, count: number) => {
-    const res = await http.patch<CommonResponse<CartResponse>>(`/api/v1/cart/items/${productOptionId}`, { count })
+    const res = await http.patch<CommonResponse<CartResponse>>(
+      `/api/v1/cart/items/${productOptionId}`,
+      { count },
+    )
     return unwrap(res.data)
   },
   removeItem: async (productOptionId: number) => {
-    const res = await http.delete<CommonResponse<CartResponse>>(`/api/v1/cart/items/${productOptionId}`)
+    const res = await http.delete<CommonResponse<CartResponse>>(
+      `/api/v1/cart/items/${productOptionId}`,
+    )
     return unwrap(res.data)
   },
 }
@@ -129,7 +146,10 @@ export const authApi = {
     return unwrap(res.data)
   },
   login: async (email: string, password: string) => {
-    const res = await http.post<CommonResponse<EmailLoginResult>>('/api/v1/auth/email/login', { email, password })
+    const res = await http.post<CommonResponse<EmailLoginResult>>('/api/v1/auth/email/login', {
+      email,
+      password,
+    })
     return unwrap(res.data)
   },
   totpLogin: async (totpPendingToken: string, code: string) => {
@@ -150,7 +170,9 @@ export const authApi = {
     await http.post('/api/v1/auth/totp/disable', { code })
   },
   oauthExchange: async (code: string) => {
-    const res = await http.post<CommonResponse<OAuthLoginResult>>('/api/v1/auth/oauth/exchange', { code })
+    const res = await http.post<CommonResponse<OAuthLoginResult>>('/api/v1/auth/oauth/exchange', {
+      code,
+    })
     return unwrap(res.data)
   },
   oauthSignUp: async (payload: {

@@ -25,14 +25,19 @@ interface Selection {
   knownProductOptionIds: number[]
 }
 
-function reconcileSelection(items: CartItem[], prevSelected: number[], prevKnown: number[]): Selection {
+function reconcileSelection(
+  items: CartItem[],
+  prevSelected: number[],
+  prevKnown: number[],
+): Selection {
   const prevSelectedSet = new Set(prevSelected)
   const prevKnownSet = new Set(prevKnown)
 
   const selectedProductOptionIds = items
     .filter(
       (item) =>
-        !item.soldOut && (prevSelectedSet.has(item.productOptionId) || !prevKnownSet.has(item.productOptionId)),
+        !item.soldOut &&
+        (prevSelectedSet.has(item.productOptionId) || !prevKnownSet.has(item.productOptionId)),
     )
     .map((item) => item.productOptionId)
 
@@ -53,7 +58,11 @@ export const useCartStore = create<CartState>()((set, get) => ({
     set({ loading: true, error: null })
     try {
       const response = await cartApi.get()
-      const selection = reconcileSelection(response.items, get().selectedProductOptionIds, get().knownProductOptionIds)
+      const selection = reconcileSelection(
+        response.items,
+        get().selectedProductOptionIds,
+        get().knownProductOptionIds,
+      )
       set({ items: response.items, ...selection, loading: false })
     } catch (error) {
       set({ loading: false, error: getApiErrorMessage(error, '장바구니를 불러오지 못했습니다.') })
@@ -65,10 +74,17 @@ export const useCartStore = create<CartState>()((set, get) => ({
     set({ pendingProductOptionId: productOptionId, error: null })
     try {
       const response = await cartApi.addItem(productOptionId, count)
-      const selection = reconcileSelection(response.items, get().selectedProductOptionIds, get().knownProductOptionIds)
+      const selection = reconcileSelection(
+        response.items,
+        get().selectedProductOptionIds,
+        get().knownProductOptionIds,
+      )
       set({ items: response.items, ...selection, pendingProductOptionId: null })
     } catch (error) {
-      set({ pendingProductOptionId: null, error: getApiErrorMessage(error, '장바구니에 담지 못했습니다.') })
+      set({
+        pendingProductOptionId: null,
+        error: getApiErrorMessage(error, '장바구니에 담지 못했습니다.'),
+      })
       throw error
     }
   },
@@ -77,10 +93,17 @@ export const useCartStore = create<CartState>()((set, get) => ({
     set({ pendingProductOptionId: productOptionId, error: null })
     try {
       const response = await cartApi.updateCount(productOptionId, count)
-      const selection = reconcileSelection(response.items, get().selectedProductOptionIds, get().knownProductOptionIds)
+      const selection = reconcileSelection(
+        response.items,
+        get().selectedProductOptionIds,
+        get().knownProductOptionIds,
+      )
       set({ items: response.items, ...selection, pendingProductOptionId: null })
     } catch (error) {
-      set({ pendingProductOptionId: null, error: getApiErrorMessage(error, '수량을 변경하지 못했습니다.') })
+      set({
+        pendingProductOptionId: null,
+        error: getApiErrorMessage(error, '수량을 변경하지 못했습니다.'),
+      })
       throw error
     }
   },
@@ -89,10 +112,17 @@ export const useCartStore = create<CartState>()((set, get) => ({
     set({ pendingProductOptionId: productOptionId, error: null })
     try {
       const response = await cartApi.removeItem(productOptionId)
-      const selection = reconcileSelection(response.items, get().selectedProductOptionIds, get().knownProductOptionIds)
+      const selection = reconcileSelection(
+        response.items,
+        get().selectedProductOptionIds,
+        get().knownProductOptionIds,
+      )
       set({ items: response.items, ...selection, pendingProductOptionId: null })
     } catch (error) {
-      set({ pendingProductOptionId: null, error: getApiErrorMessage(error, '삭제하지 못했습니다.') })
+      set({
+        pendingProductOptionId: null,
+        error: getApiErrorMessage(error, '삭제하지 못했습니다.'),
+      })
       throw error
     }
   },

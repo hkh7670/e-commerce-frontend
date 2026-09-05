@@ -4,13 +4,16 @@ import { deliveryOptionApi, orderApi } from '../lib/api'
 import { useCartStore } from '../store/cartStore'
 import type { DeliveryOption } from '../types'
 
-const TOSS_CLIENT_KEY = import.meta.env.VITE_TOSS_CLIENT_KEY ?? 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'
+const TOSS_CLIENT_KEY =
+  import.meta.env.VITE_TOSS_CLIENT_KEY ?? 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'
 
 export function CheckoutPage() {
   const navigate = useNavigate()
   const items = useCartStore((state) => state.items)
   const selectedProductOptionIds = useCartStore((state) => state.selectedProductOptionIds)
-  const selectedItems = items.filter((item) => selectedProductOptionIds.includes(item.productOptionId))
+  const selectedItems = items.filter((item) =>
+    selectedProductOptionIds.includes(item.productOptionId),
+  )
   const [deliveryOptions, setDeliveryOptions] = useState<DeliveryOption[]>([])
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(null)
   const [submitting, setSubmitting] = useState(false)
