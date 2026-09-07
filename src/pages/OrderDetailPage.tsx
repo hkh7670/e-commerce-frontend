@@ -112,6 +112,18 @@ export function OrderDetailPage() {
             <span>배송비</span>
             <span>{order.deliveryPrice.toLocaleString()}원</span>
           </div>
+          {order.couponDiscountPrice > 0 && (
+            <div className="summary-row">
+              <span>쿠폰 할인</span>
+              <span>-{order.couponDiscountPrice.toLocaleString()}원</span>
+            </div>
+          )}
+          {order.pointDiscountPrice > 0 && (
+            <div className="summary-row">
+              <span>포인트 사용</span>
+              <span>-{order.pointDiscountPrice.toLocaleString()}원</span>
+            </div>
+          )}
           <div className="summary-row total">
             <span>총 결제금액</span>
             <span>{order.totalPrice.toLocaleString()}원</span>

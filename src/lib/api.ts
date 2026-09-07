@@ -6,6 +6,7 @@ import type {
   CommonResponse,
   DeliveryOption,
   EmailLoginResult,
+  MemberCoupon,
   MemberInfo,
   OAuthLoginResult,
   OrderCreateResponse,
@@ -13,6 +14,7 @@ import type {
   OrderStatusChangeResponse,
   PageResponse,
   PaymentConfirmResponse,
+  PointBalance,
   ProductDetail,
   ProductSummary,
   OrderSummary,
@@ -53,11 +55,32 @@ export const deliveryOptionApi = {
   },
 }
 
+export const couponApi = {
+  list: async () => {
+    const res = await http.get<CommonResponse<MemberCoupon[]>>('/api/v1/coupons')
+    return unwrap(res.data)
+  },
+}
+
+export const pointApi = {
+  getBalance: async () => {
+    const res = await http.get<CommonResponse<PointBalance>>('/api/v1/points')
+    return unwrap(res.data)
+  },
+}
+
 export const orderApi = {
-  create: async (deliveryOptionId: number, items: { productOptionId: number; count: number }[]) => {
+  create: async (
+    deliveryOptionId: number,
+    items: { productOptionId: number; count: number }[],
+    memberCouponId?: number | null,
+    usePointAmount?: number,
+  ) => {
     const res = await http.post<CommonResponse<OrderCreateResponse>>('/api/v1/orders', {
       deliveryOptionId,
       items,
+      memberCouponId: memberCouponId ?? null,
+      usePointAmount: usePointAmount ?? 0,
     })
     return unwrap(res.data)
   },

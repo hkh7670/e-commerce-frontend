@@ -67,6 +67,22 @@ export interface DeliveryOption {
   price: number
 }
 
+export type CouponDiscountType = 'FIXED' | 'PERCENTAGE'
+
+export interface MemberCoupon {
+  memberCouponId: number
+  couponName: string
+  discountType: CouponDiscountType
+  discountValue: number
+  maxDiscountPrice: number | null
+  minOrderPrice: number
+  expiredAt: string
+}
+
+export interface PointBalance {
+  usableAmount: number
+}
+
 export type OrderStatus =
   'PENDING_PAYMENT' | 'PAID' | 'SHIPPING' | 'DELIVERED' | 'CANCELLED' | 'RETURNING' | 'RETURNED'
 
@@ -75,6 +91,8 @@ export interface OrderCreateResponse {
   orderUid: string
   productTotalPrice: number
   deliveryPrice: number
+  couponDiscountPrice: number
+  pointDiscountPrice: number
   totalPrice: number
 }
 
@@ -92,6 +110,8 @@ export interface OrderDetail {
   orderUid: string
   productTotalPrice: number
   deliveryPrice: number
+  couponDiscountPrice: number
+  pointDiscountPrice: number
   totalPrice: number
   status: OrderStatus
   isPaid: boolean
