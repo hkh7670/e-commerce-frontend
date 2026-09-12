@@ -23,6 +23,7 @@ export function Header() {
   const [suggestions, setSuggestions] = useState<ProductAutocompleteResult[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+  const accessToken = useAuthStore((state) => state.accessToken)
   const logout = useAuthStore((state) => state.logout)
   const cartCount = useCartStore((state) => state.items.reduce((sum, item) => sum + item.count, 0))
   const fetchCart = useCartStore((state) => state.fetchCart)
@@ -46,7 +47,7 @@ export function Header() {
       .then(setMember)
       .catch(() => setMember(null))
     fetchCart().catch(() => {})
-  }, [isLoggedIn, fetchCart, resetCart])
+  }, [isLoggedIn, accessToken, fetchCart, resetCart])
 
   useEffect(() => {
     const trimmed = keyword.trim()
