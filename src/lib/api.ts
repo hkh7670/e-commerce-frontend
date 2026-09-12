@@ -15,6 +15,7 @@ import type {
   PageResponse,
   PaymentConfirmResponse,
   PointBalance,
+  ProductAutocompleteResult,
   ProductDetail,
   ProductSummary,
   OrderSummary,
@@ -37,6 +38,13 @@ export const productApi = {
   },
   get: async (productId: number) => {
     const res = await http.get<CommonResponse<ProductDetail>>(`/api/v1/products/${productId}`)
+    return unwrap(res.data)
+  },
+  autocomplete: async (keyword: string, size?: number) => {
+    const res = await http.get<CommonResponse<ProductAutocompleteResult[]>>(
+      '/api/v1/products/autocomplete',
+      { params: { keyword, size } },
+    )
     return unwrap(res.data)
   },
 }

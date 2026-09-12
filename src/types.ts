@@ -196,3 +196,9 @@ export interface CartItem {
 export interface CartResponse {
   items: CartItem[]
 }
+
+export interface ProductAutocompleteResult {
+  productId: number
+  name: string
+  imageUrl: string | null
+}

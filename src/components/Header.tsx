@@ -1,10 +1,12 @@
 import { useEffect, useState, type SubmitEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { GoogleIcon, KakaoIcon, MailIcon, NaverIcon } from './AuthIcons'
-import { categoryApi, memberApi } from '../lib/api'
+import { categoryApi, memberApi, productApi } from '../lib/api'
 import { useAuthStore } from '../store/authStore'
 import { useCartStore } from '../store/cartStore'
-import type { Category, JoinProvider, MemberInfo } from '../types'
+import type { Category, JoinProvider, MemberInfo, ProductAutocompleteResult } from '../types'
+
+const AUTOCOMPLETE_DEBOUNCE_MS = 250
 
 const PROVIDER_ICON: Record<JoinProvider, typeof MailIcon> = {
   EMAIL: MailIcon,
@@ -18,6 +20,8 @@ export function Header() {
   const [keyword, setKeyword] = useState('')
   const [largeCategories, setLargeCategories] = useState<Category[]>([])
   const [member, setMember] = useState<MemberInfo | null>(null)
+  const [suggestions, setSuggestions] = useState<ProductAutocompleteResult[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
   const logout = useAuthStore((state) => state.logout)
   const cartCount = useCartStore((state) => state.items.reduce((sum, item) => sum + item.count, 0))
@@ -44,11 +48,31 @@ export function Header() {
     fetchCart().catch(() => {})
   }, [isLoggedIn, fetchCart, resetCart])
 
+  useEffect(() => {
+    const trimmed = keyword.trim()
+    if (!trimmed) {
+      setSuggestions([])
+      return
+    }
+    const timer = setTimeout(() => {
+      productApi
+        .autocomplete(trimmed)
+        .then(setSuggestions)
+        .catch(() => setSuggestions([]))
+    }, AUTOCOMPLETE_DEBOUNCE_MS)
+    return () => clearTimeout(timer)
+  }, [keyword])
+
   const handleSearch = (e: SubmitEvent) => {
     e.preventDefault()
     navigate(
       keyword.trim() ? `/products?keyword=${encodeURIComponent(keyword.trim())}` : '/products',
     )
+  }
+
+  const handleSelectSuggestion = (productId: number) => {
+    setShowSuggestions(false)
+    navigate(`/products/${productId}`)
   }
 
   const ProviderIcon = member ? PROVIDER_ICON[member.joinProvider] : null
@@ -60,15 +84,38 @@ export function Header() {
           coupang<span>ish</span>
         </Link>
 
-        <form className="search-bar" onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="검색어를 입력하세요"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-          <button type="submit">검색</button>
-        </form>
+        <div className="search-bar-wrap">
+          <form className="search-bar" onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요"
+              value={keyword}
+              onChange={(e) => {
+                setKeyword(e.target.value)
+                setShowSuggestions(true)
+              }}
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setShowSuggestions(false)}
+            />
+            <button type="submit">검색</button>
+          </form>
+
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className="search-suggestions">
+              {suggestions.map((suggestion) => (
+                <li
+                  key={suggestion.productId}
+                  className="search-suggestions__item"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => handleSelectSuggestion(suggestion.productId)}
+                >
+                  {suggestion.imageUrl && <img src={suggestion.imageUrl} alt={suggestion.name} />}
+                  <span>{suggestion.name}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         <nav className="site-header__actions">
           {isLoggedIn && member && ProviderIcon && (
