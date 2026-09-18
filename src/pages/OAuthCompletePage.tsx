@@ -12,7 +12,12 @@ export function OAuthCompletePage() {
   const setTokens = useAuthStore((state) => state.setTokens)
   const [stage, setStage] = useState<Stage>('exchanging')
   const [tempToken, setTempToken] = useState('')
-  const [form, setForm] = useState({ lastName: '', firstName: '', birthDate: '', phoneNumber: '' })
+  const [form, setForm] = useState({
+    lastName: '',
+    firstName: '',
+    birthDate: '',
+    phoneNumber: '',
+  })
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const hasExchangedRef = useRef(false)

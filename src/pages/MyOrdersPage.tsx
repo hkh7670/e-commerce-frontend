@@ -57,7 +57,15 @@ export function MyOrdersPage() {
 
   return (
     <div className="container" style={{ paddingTop: 'var(--space-6)', maxWidth: 760 }}>
-      <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 'var(--space-5)' }}>주문내역</h1>
+      <h1
+        style={{
+          fontSize: 24,
+          fontWeight: 800,
+          marginBottom: 'var(--space-5)',
+        }}
+      >
+        주문내역
+      </h1>
 
       {orderPage.content.map((order) => (
         <div className="order-card" key={order.orderId}>
