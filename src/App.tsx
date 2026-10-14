@@ -5,6 +5,7 @@ import { CheckoutPage } from './pages/CheckoutPage'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
 import { MyOrdersPage } from './pages/MyOrdersPage'
+import { MyReviewsPage } from './pages/MyReviewsPage'
 import { OAuthCompletePage } from './pages/OAuthCompletePage'
 import { OAuthErrorPage } from './pages/OAuthErrorPage'
 import { OrderCompletePage } from './pages/OrderCompletePage'
@@ -31,6 +32,7 @@ export function App() {
         <Route path="/oauth/complete" element={<OAuthCompletePage />} />
         <Route path="/oauth/error" element={<OAuthErrorPage />} />
         <Route path="/account/security" element={<SecuritySettingsPage />} />
+        <Route path="/account/reviews" element={<MyReviewsPage />} />
       </Route>
     </Routes>
   )

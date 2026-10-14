@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { orderApi } from '../lib/api'
-import type { OrderDetail, OrderStatus } from '../types'
+import { Link, useParams } from 'react-router-dom'
+import { ReviewForm } from '../components/ReviewForm'
+import { orderApi, reviewApi } from '../lib/api'
+import { useToastStore } from '../store/toastStore'
+import type { OrderDetail, OrderItem, OrderStatus } from '../types'
 
 const STATUS_LABEL: Record<OrderStatus, string> = {
   PENDING_PAYMENT: '결제대기',
@@ -29,6 +31,7 @@ export function OrderDetailPage() {
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [writingOrderItemId, setWritingOrderItemId] = useState<number | null>(null)
 
   const load = () => {
     if (!orderId) return
@@ -69,6 +72,49 @@ export function OrderDetailPage() {
     }
   }
 
+  const handleCreateReview = async (orderItemId: number, rating: number, content: string) => {
+    const review = await reviewApi.create(orderItemId, { rating, content, imageUrl: null })
+    setOrder((prev) =>
+      prev
+        ? {
+            ...prev,
+            itemList: prev.itemList.map((item) =>
+              item.orderItemId === orderItemId ? { ...item, reviewId: review.reviewId } : item,
+            ),
+          }
+        : prev,
+    )
+    setWritingOrderItemId(null)
+    useToastStore.getState().show('후기가 등록되었습니다.')
+  }
+
+  const renderReviewAction = (item: OrderItem) => {
+    if (item.reviewId !== null) {
+      return (
+        <Link to="/account/reviews" className="btn btn-outline btn-sm">
+          내 후기 보기
+        </Link>
+      )
+    }
+    if (writingOrderItemId === item.orderItemId) {
+      return (
+        <ReviewForm
+          submitLabel="후기 등록"
+          onSubmit={(rating, content) => handleCreateReview(item.orderItemId, rating, content)}
+          onCancel={() => setWritingOrderItemId(null)}
+        />
+      )
+    }
+    return (
+      <button
+        className="btn btn-outline btn-sm"
+        onClick={() => setWritingOrderItemId(item.orderItemId)}
+      >
+        후기 쓰기
+      </button>
+    )
+  }
+
   if (loading) {
     return <div className="loading-state">불러오는 중...</div>
   }
@@ -85,6 +131,7 @@ export function OrderDetailPage() {
 
   const canCancel = order.status === 'PENDING_PAYMENT' || order.status === 'PAID'
   const canReturn = order.status === 'DELIVERED'
+  const canReview = order.status === 'DELIVERED'
 
   return (
     <div className="container" style={{ paddingTop: 'var(--space-6)', maxWidth: 760 }}>
@@ -101,11 +148,14 @@ export function OrderDetailPage() {
         </div>
         <div style={{ padding: 'var(--space-5)' }}>
           {order.itemList.map((item) => (
-            <div className="summary-row" key={item.productOptionId}>
-              <span>
-                {item.productName} ({item.optionName}) x {item.count}
-              </span>
-              <span>{(item.price * item.count).toLocaleString()}원</span>
+            <div key={item.orderItemId}>
+              <div className="summary-row">
+                <span>
+                  {item.productName} ({item.optionName}) x {item.count}
+                </span>
+                <span>{(item.price * item.count).toLocaleString()}원</span>
+              </div>
+              {canReview && <div className="order-item-review">{renderReviewAction(item)}</div>}
             </div>
           ))}
           <div className="summary-row">

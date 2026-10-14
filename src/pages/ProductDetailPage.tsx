@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { ProductReviews } from '../components/ProductReviews'
 import { productApi } from '../lib/api'
 import { useAuthStore } from '../store/authStore'
 import { useCartStore } from '../store/cartStore'
@@ -169,6 +170,8 @@ export function ProductDetailPage() {
           )}
         </div>
       </div>
+
+      <ProductReviews key={product.id} productId={product.id} />
     </div>
   )
 }

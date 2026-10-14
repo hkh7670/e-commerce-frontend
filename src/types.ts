@@ -103,6 +103,8 @@ export interface OrderCreateResponse {
 }
 
 export interface OrderItem {
+  orderItemId: number
+  reviewId: number | null
   productId: number
   productName: string
   productOptionId: number
@@ -206,5 +208,32 @@ export interface CartResponse {
 export interface ProductAutocompleteResult {
   productId: number
   name: string
+  imageUrl: string | null
+}
+
+export interface Review {
+  reviewId: number
+  productId: number
+  productName: string | null
+  orderItemId: number
+  rating: number
+  content: string
+  imageUrl: string | null
+  reviewerName: string
+  createdAt: string
+  updatedAt: string
+}
+
+export type ReviewRating = '1' | '2' | '3' | '4' | '5'
+
+export interface ReviewSummary {
+  averageRating: number
+  reviewCount: number
+  ratingCounts: Record<ReviewRating, number>
+}
+
+export interface ReviewInput {
+  rating: number
+  content: string
   imageUrl: string | null
 }

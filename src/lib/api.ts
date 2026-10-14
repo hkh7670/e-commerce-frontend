@@ -19,6 +19,9 @@ import type {
   ProductDetail,
   ProductSummary,
   OrderSummary,
+  Review,
+  ReviewInput,
+  ReviewSummary,
   TotpEnrollResult,
 } from '../types'
 
@@ -152,6 +155,42 @@ export const cartApi = {
   removeItem: async (productOptionId: number) => {
     const res = await http.delete<CommonResponse<CartResponse>>(
       `/api/v1/cart/items/${productOptionId}`,
+    )
+    return unwrap(res.data)
+  },
+}
+
+export const reviewApi = {
+  create: async (orderItemId: number, input: ReviewInput) => {
+    const res = await http.post<CommonResponse<Review>>('/api/v1/reviews', {
+      orderItemId,
+      ...input,
+    })
+    return unwrap(res.data)
+  },
+  update: async (reviewId: number, input: ReviewInput) => {
+    const res = await http.patch<CommonResponse<Review>>(`/api/v1/reviews/${reviewId}`, input)
+    return unwrap(res.data)
+  },
+  remove: async (reviewId: number) => {
+    await http.delete(`/api/v1/reviews/${reviewId}`)
+  },
+  listMine: async (page: number, size: number) => {
+    const res = await http.get<CommonResponse<PageResponse<Review>>>('/api/v1/reviews/me', {
+      params: { page, size },
+    })
+    return unwrap(res.data)
+  },
+  listByProduct: async (productId: number, page: number, size: number) => {
+    const res = await http.get<CommonResponse<PageResponse<Review>>>(
+      `/api/v1/products/${productId}/reviews`,
+      { params: { page, size } },
+    )
+    return unwrap(res.data)
+  },
+  summary: async (productId: number) => {
+    const res = await http.get<CommonResponse<ReviewSummary>>(
+      `/api/v1/products/${productId}/reviews/summary`,
     )
     return unwrap(res.data)
   },

@@ -135,6 +135,7 @@ export function Header() {
           {isLoggedIn ? (
             <>
               <Link to="/orders">주문내역</Link>
+              <Link to="/account/reviews">내 후기</Link>
               <Link to="/account/security">보안 설정</Link>
               <button onClick={logout}>로그아웃</button>
             </>
