@@ -1,0 +1,53 @@
+{
+  "format_on_save": "on",
+  "prettier": {
+    "allowed": false
+  },
+  "lsp": {
+    "oxfmt": {
+      "initialization_options": {
+        "settings": {
+          "run": "onSave"
+        }
+      }
+    }
+  },
+  "languages": {
+    "JavaScript": {
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
+        }
+      ]
+    },
+    "TypeScript": {
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
+        }
+      ]
+    },
+    "TSX": {
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
+        }
+      ]
+    },
+    "JSON": {
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
+        }
+      ]
+    }
+  }
+}
